@@ -1,0 +1,91 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>time-list</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="outer-content">
+
+  <ion-list>
+    <ion-list-header>
+      Settings
+    </ion-list-header>
+
+    <button ion-item>
+      <ion-avatar item-start (click)="getData()">
+        <img src="./assets/avatar-cher.png">
+      </ion-avatar>
+      <ion-label>Wi-Fi</ion-label>
+      <ion-note item-end>The Interwebz</ion-note>
+    </button>
+    <button ion-item>
+      <ion-avatar item-start>
+        <img src="./assets/avatar-cher.png">
+      </ion-avatar>
+      <ion-label>Wi-Fi</ion-label>
+      <ion-note item-end>The Interwebz</ion-note>
+    </button>
+    <button ion-item>
+      <ion-avatar item-start>
+        <img src="./assets/avatar-cher.png">
+      </ion-avatar>
+      <ion-label>Wi-Fi</ion-label>
+      <ion-note item-end>The Interwebz</ion-note>
+    </button>
+    <button ion-item>
+      <ion-avatar item-start>
+        <img src="./assets/avatar-cher.png">
+      </ion-avatar>
+      <ion-label>Wi-Fi</ion-label>
+      <ion-note item-end>The Interwebz</ion-note>
+    </button>
+
+  </ion-list>
+
+</ion-content>
+
+<style>
+  /* TODO: spinner is dropping classes so we have to use ids: https://github.com/ionic-team/ionic/issues/7087 */
+  #archive-spinner,
+  #download-spinner,
+  .archiving .expand-hide,
+  .downloading .expand-hide {
+    display: none;
+  }
+
+  /* TODO: spinner doesn't have a good way to do this yet: https://github.com/ionic-team/ionic/issues/7087 */
+  #archive-spinner.spinner-ios line,
+  #archive-spinner.spinner-crescent circle {
+    stroke: #fff;
+  }
+
+  #archive-spinner.spinner-circles circle {
+    fill: #fff;
+  }
+
+  .archiving #archive-spinner,
+  .downloading #download-spinner {
+    display: block;
+  }
+
+  .chat-sliding-demo ion-note {
+    font-size: 13px;
+    margin-top: -8px;
+  }
+
+  .chat-sliding-demo img {
+    pointer-events: none;
+  }
+
+  .login-sliding-demo .ion-logo-twitter {
+    color: #53ACEB;
+  }
+
+  .login-sliding-demo .ion-logo-github {
+    color: #000000;
+  }
+
+  .login-sliding-demo .ion-logo-instagram {
+    color: #235D8D;
+  }
+</style>
