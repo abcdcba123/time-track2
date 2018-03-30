@@ -1,22 +1,20 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import {Observable} from 'rxjs/Observable';
+import {Injectable} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
 
 import {HttpService} from "./HttpService";
 import {StorageService} from "./StorageService";
 
 @Injectable()
 export class UserInfoService {
-    API_URL = "http://localhost:1856/api";
+    API_URL = "http://testtimetrack.test.com/index.php";
 
-    constructor(
-                private http: HttpClient,
+    constructor(private http: HttpClient,
                 private httpService: HttpService,
                 private storageService: StorageService) {
     }
 
     login(user) {
-        var url = this.API_URL + "/UserLogin";
+        var url = this.API_URL + "/public/core/login";
         return this.httpService.httpPostNoAuth(url, user);
     }
 

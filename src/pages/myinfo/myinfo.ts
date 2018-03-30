@@ -25,8 +25,8 @@ export class MyinfoPage {
 
     getInfo() {
         this.userInfoService.GetUserInfo(this.id).then(data => {
-            this.user = data.Result;
-            //alert(JSON.stringify(this.user));
+            // this.user = data.Result;
+            alert(JSON.stringify(this.user));
         });
     }
 

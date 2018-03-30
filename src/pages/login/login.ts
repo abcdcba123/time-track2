@@ -37,6 +37,7 @@ export class LoginPage {
     }
 
     login(user, _event) {
+        console.log(user);
         _event.preventDefault();//该方法将通知 Web 浏览器不要执行与事件关联的默认动作
         this.userInfoService.login(user).then(data => {
 
