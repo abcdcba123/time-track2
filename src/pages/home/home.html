@@ -10,35 +10,15 @@
     <ion-list-header>
       Settings
     </ion-list-header>
-
-    <button ion-item>
-      <ion-avatar item-start (click)="getData()">
-        <img src="./assets/avatar-cher.png">
-      </ion-avatar>
-      <ion-label>Wi-Fi</ion-label>
-      <ion-note item-end>The Interwebz</ion-note>
-    </button>
-    <button ion-item>
-      <ion-avatar item-start>
-        <img src="./assets/avatar-cher.png">
-      </ion-avatar>
-      <ion-label>Wi-Fi</ion-label>
-      <ion-note item-end>The Interwebz</ion-note>
-    </button>
-    <button ion-item>
-      <ion-avatar item-start>
-        <img src="./assets/avatar-cher.png">
-      </ion-avatar>
-      <ion-label>Wi-Fi</ion-label>
-      <ion-note item-end>The Interwebz</ion-note>
-    </button>
-    <button ion-item>
-      <ion-avatar item-start>
-        <img src="./assets/avatar-cher.png">
-      </ion-avatar>
-      <ion-label>Wi-Fi</ion-label>
-      <ion-note item-end>The Interwebz</ion-note>
-    </button>
+    <ion-item-group  *ngFor="let chat of chats" >
+      <button ion-item (click)="trackList(chat.theme_id)">
+        <ion-avatar item-start>
+          <img [src]="chat.img">
+        </ion-avatar>
+        <ion-label>{{chat.name}}</ion-label>
+        <!--<ion-note item-end>The Interwebz</ion-note>-->
+      </button>
+    </ion-item-group>
 
   </ion-list>
 

@@ -6,8 +6,6 @@ import 'rxjs/add/operator/toPromise';
 import { UserInfoService } from "./../../providers/UserInfoService";
 import { StorageService } from "./../../providers/StorageService";
 
-import { UserInfoData } from "./../../model/UserInfoData";
-
 import { MyinfoPage } from '../myinfo/myinfo';
 
 
@@ -28,8 +26,8 @@ export class LoginPage {
 
     loginForm = this.formBuilder.group({
         //'LoginID': ['admin@163.com', [Validators.required, Validators.pattern('^([a-zA-Z0-9_.]*)((@[a-zA-Z0-9_.]*)\.([a-zA-Z]{2}|[a-zA-Z]{3}))$')]],// 第一个参数是默认值
-        'LoginID': ['admin@163.com2', [Validators.required, Validators.minLength(4)]],// 第一个参数是默认值
-        'LoginPwd': ['123456', [Validators.required, Validators.minLength(4)]]
+        'phone': ['18817572554', [Validators.required, Validators.minLength(11)]],// 第一个参数是默认值
+        'password': ['123456', [Validators.required, Validators.minLength(4)]]
     });
 
     ionViewDidLoad() {
@@ -38,20 +36,34 @@ export class LoginPage {
 
     login(user, _event) {
         console.log(user);
+        var body = {phone:user.phone,password:user.password};
         _event.preventDefault();//该方法将通知 Web 浏览器不要执行与事件关联的默认动作
-        this.userInfoService.login(user).then(data => {
-
-            alert(JSON.stringify(data));
-            // if (data.Result.ID > 0)//登录成功
+        this.userInfoService.login(body).then(data => {
+            console.log(JSON.stringify(data));
+            console.log(data);
+            if (typeof(data) == 'object' && typeof(data.code) == 'string' && data.code == 'OK'){
+                this.storageService.write('token', data.data.token);
+                //测试写缓存
+                let ss = this.storageService.read('token');
+                console.log(ss);
+                //传参
+            this.navCtrl.push(MyinfoPage, { token: data.data.token });
+            }else{
+                alert('用户名或密码错误.');
+            }
+            // if (typeof(data.token) == 'string')//登录成功
             // {
-            //     this.storageService.write('UserInfo', data.Result);
+            //     console.log(1);
+            //     console.log(data);
+            //     this.storageService.write('UserInfo', data.token);
             //     //测试写缓存
             //     //let ss = this.storageService.read<UserInfoData>('UserInfo');
             //     //console.log(ss.UserToken);
             //     //传参
-            //     this.navCtrl.push(MyinfoPage, { item: data.Result.ID });
+            //     this.navCtrl.push(MyinfoPage, { item: data.token });
             // }
             // else {
+            //     console.log(2);
             //     let toast = this.toastCtrl.create({
             //         message: '用户名或密码错误.',
             //         duration: 3000,
