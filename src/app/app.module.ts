@@ -22,6 +22,7 @@ import {Camera} from '@ionic-native/camera';
 import {FileTransfer, FileUploadOptions, FileTransferObject} from '@ionic-native/file-transfer';
 import {File} from '@ionic-native/file';
 import {ImageService} from "../providers/ImageService";
+import {UploaderService} from "../providers/UploaderService";
 
 @NgModule({
     declarations: [
@@ -63,6 +64,7 @@ import {ImageService} from "../providers/ImageService";
         Camera,
         ImagePicker,
         FileTransferObject,
+        UploaderService,
         {provide: ErrorHandler, useClass: IonicErrorHandler}
     ]
 })

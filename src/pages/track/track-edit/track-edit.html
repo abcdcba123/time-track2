@@ -1,0 +1,26 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>track-edit</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <form [formGroup]="trackEditForm" >
+        <ion-input type="hidden" formControlName="trackId"></ion-input>
+        <ion-input type="hidden" formControlName="themeId"></ion-input>
+        <ion-item>
+            <ion-label>trackDate</ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY-MM-DD" formControlName="trackDate"></ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label>trackTime</ion-label>
+            <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" formControlName="trackDateTime"></ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label>content</ion-label>
+            <ion-textarea formControlName="content"></ion-textarea>
+        </ion-item>
+        <input type="file" id="track_img" #track_img (change)="uploadTest(track_img)" name="file" id="file">
+        <button ion-button full (click)="uploadTrackImg()">上传</button>
+        <button ion-button full (click)="saveTrackInfo(trackEditForm.value, $event)" [disabled]="!trackEditForm.valid">Dark</button>
+    </form>
+</ion-content>
