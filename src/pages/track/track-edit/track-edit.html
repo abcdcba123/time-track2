@@ -8,19 +8,38 @@
         <ion-input type="hidden" formControlName="trackId"></ion-input>
         <ion-input type="hidden" formControlName="themeId"></ion-input>
         <ion-item>
-            <ion-label>trackDate</ion-label>
+            <ion-label>内容</ion-label>
+            <ion-textarea formControlName="content"></ion-textarea>
+        </ion-item>
+        <ion-item>
+            <ion-label>日期</ion-label>
             <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY-MM-DD" formControlName="trackDate"></ion-datetime>
         </ion-item>
         <ion-item>
-            <ion-label>trackTime</ion-label>
+            <ion-label>时间</ion-label>
             <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" formControlName="trackDateTime"></ion-datetime>
         </ion-item>
-        <ion-item>
-            <ion-label>content</ion-label>
-            <ion-textarea formControlName="content"></ion-textarea>
-        </ion-item>
-        <input type="file" id="track_img" #track_img (change)="uploadTest(track_img)" name="file" id="file">
-        <button ion-button full (click)="uploadTrackImg()">上传</button>
+        <div id="preDiv">
+            <input type="file" accept="images/*" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)" class="file_upload" multiple="multiple" />
+            <img src="assets/imgs/addpic.png" class="addpic" id="preview1" />
+        </div>
+        <!--<input type="file" id="track_img" #track_img (change)="uploadTest(track_img)" name="file" id="file">-->
+        <!--<input type="file" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)">-->
+        <!--<button ion-button full (click)="uploadTrackImg()">上传</button>-->
         <button ion-button full (click)="saveTrackInfo(trackEditForm.value, $event)" [disabled]="!trackEditForm.valid">Dark</button>
     </form>
 </ion-content>
+<style>
+    .file_upload {
+        position: absolute;
+        width: 22%;
+        height: 90px;
+        margin-left: 2px;
+        opacity: 0;
+    }
+    .addpic {
+        width: 23%;
+        height: 90px;
+        margin-left: 2px;
+    }
+</style>

@@ -32,6 +32,7 @@ export class UploaderService {
                 alert("");
             }
         };
+        this.uploader.queue[0].upload(); // 开始上传
     }
 
     upload(file: File) {
@@ -66,7 +67,7 @@ export class UploaderService {
         // The `reportProgress` option tells HttpClient to listen and return
         // XHR progress events.
 
-        let url = 'http://mytest.my.com/ionic/back/time-track/index.php/core/UploadController/uploadTrackImg?token' +this.storageService.read<string>('token');
+        let url = '/ionic/track-admin/index.php/core/UploadController/uploadTrackImg?token' +this.storageService.read<string>('token');
         this.uploader= new FileUploader({
             url: url,
             method: "POST"
@@ -86,10 +87,10 @@ export class UploaderService {
         //
         // // The `HttpClient.request` API produces a raw event stream
         // // which includes start (sent), progress, and response events.
-        return this.http.request(req).toPromise()
-            .catch(err => {
-                this.handleError(err);
-            });
+        // return this.http.request(req).toPromise()
+        //     .catch(err => {
+        //         this.handleError(err);
+        //     });
     }
 
     /**

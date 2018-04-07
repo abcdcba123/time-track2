@@ -10,6 +10,8 @@ import {ImageService} from "../../../providers/ImageService";
 import {File} from "@ionic-native/file";
 import {HttpService} from "../../../providers/HttpService";
 import {UploaderService} from "../../../providers/UploaderService";
+import {FileUploader} from "ng2-file-upload";
+import {StorageService} from "../../../providers/StorageService";
 
 
 @Component({
@@ -18,6 +20,11 @@ import {UploaderService} from "../../../providers/UploaderService";
     providers: [TrackService]
 })
 export class TrackEditPage {
+    public uploader:FileUploader = new FileUploader({
+        url: "/ionic/track-admin/index.php/core/UploadController/uploadTrackImg?token=c4ca4238a0b923820dcc509a6f75849b.5ac735b464d0f",
+        method: "POST",
+        itemAlias: "track_img"
+    });
 
     trackEditForm: any;
 
@@ -32,21 +39,54 @@ export class TrackEditPage {
                 private imageService: ImageService,
                 private httpService: HttpService,
                 private uploaderService: UploaderService,
+                private storageService: StorageService,
                 private file: File) {
+        this.uploader = new FileUploader({
+            url: "/ionic/track-admin/index.php/core/UploadController/uploadTrackImg?token=" + this.storageService.read<string>('token'),
+            method: "POST",
+            itemAlias: "track_img"
+        });
         var trackId = navParams.get('trackId');
         var themeId = navParams.get('themeId');
         if (trackId == null) {
             this.trackEditForm = this.formBuilder.group({
                 trackId: [''],
                 themeId: [themeId, [Validators.required]],
-                trackDate: new Date(),
-                trackDateTime: new Date(),
-                content: '',
-                style: '',
-                fileList: []
+                trackDate: [new Date()],
+                trackDateTime: [new Date()],
+                content: [''],
+                style: [''],
+                fileList: [[]]
             });
         } else {
             this.getTrackInfo(trackId);
+        }
+    }
+
+    selectedFileOnChanged(event) {
+        // console.log(this.uploader.queue);
+        // console.log(document.querySelector('#preDiv').innerHTML);
+        // document.querySelector('#preDiv').innerHTML = 'div';
+        for (var i in this.uploader.queue){
+            this.uploader.queue[i].onSuccess = function (response, status, headers) {
+                // 上传文件成功
+                if (status == 200) {
+                    var obj = JSON.parse(response);
+                    if (obj.code == 'OK'){
+                        //上传成功
+                        var innerHtml = document.querySelector('#preDiv').innerHTML;
+                        innerHtml = '<img src="' + obj.data[0].mini_img_url + '">' + innerHtml;
+                        document.querySelector('#preDiv').innerHTML = innerHtml;
+                        // document.querySelector('#preview1').innerHTML = obj.data[0].img_url;
+                    }else {
+                        //上传失败
+                        alert('请重新登录');
+                    }
+                } else {
+                    alert("上传错误");
+                }
+            };
+            this.uploader.queue[i].upload(); // 开始上传
         }
     }
 
@@ -87,16 +127,16 @@ export class TrackEditPage {
             console.log(data);
             this.user = data.Result;
             if (typeof(data) == 'object' && typeof(data.code) == 'string' && data.code == 'OK') {
-                // console.log(data.data);
-                // this.trackEditForm = this.formBuilder.group({
-                //     trackId: [data.data.track_id],
-                //     themeId: [data.data.theme_id, [Validators.required]],
-                //     trackDate: data.data.track_date,
-                //     trackDateTime: data.data.track_date_time,
-                //     content: data.data.content,
-                //     style: data.data.style,
-                //     fileLis: data.data.style
-                // });
+                console.log(data.data);
+                this.trackEditForm = this.formBuilder.group({
+                    trackId: [data.data.track_id],
+                    themeId: [data.data.theme_id, [Validators.required]],
+                    trackDate: data.data.track_date,
+                    trackDateTime: data.data.track_date_time,
+                    content: data.data.content,
+                    style: data.data.style,
+                    fileLis: data.data.style
+                });
             } else {
                 alert('系统错误.');
             }
