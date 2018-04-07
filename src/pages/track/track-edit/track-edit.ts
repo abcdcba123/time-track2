@@ -75,7 +75,7 @@ export class TrackEditPage {
                     if (obj.code == 'OK'){
                         //上传成功
                         var innerHtml = document.querySelector('#preDiv').innerHTML;
-                        innerHtml = '<img src="' + obj.data[0].mini_img_url + '">' + innerHtml;
+                        innerHtml = '<img width="23%" height="90ox;" src="' + obj.data[0].mini_img_url + '">' + innerHtml;
                         document.querySelector('#preDiv').innerHTML = innerHtml;
                         // document.querySelector('#preview1').innerHTML = obj.data[0].img_url;
                     }else {
@@ -88,6 +88,11 @@ export class TrackEditPage {
             };
             this.uploader.queue[i].upload(); // 开始上传
         }
+        this.uploader = new FileUploader({
+            url: "/ionic/track-admin/index.php/core/UploadController/uploadTrackImg?token=" + this.storageService.read<string>('token'),
+            method: "POST",
+            itemAlias: "track_img"
+        });
     }
 
     uploadTest(input: HTMLInputElement) {
@@ -124,7 +129,6 @@ export class TrackEditPage {
 
     getTrackInfo(trackId: any) {
         this.trackService.trackInfo(trackId).then(data => {
-            console.log(data);
             this.user = data.Result;
             if (typeof(data) == 'object' && typeof(data.code) == 'string' && data.code == 'OK') {
                 console.log(data.data);
