@@ -21,19 +21,19 @@ export class UploaderService {
     //   ...
     // }
 
-    selectedFileOnChanged(event) {
-        this.uploader.queue[0].onSuccess = function (response, status, headers) {
-            // 上传文件成功
-            if (status == 200) {
-                console.log(response)
-                let tempRes = JSON.parse(response);
-            } else {
-                // 上传文件后获取服务器返回的数据错误
-                alert("");
-            }
-        };
-        this.uploader.queue[0].upload(); // 开始上传
-    }
+    // selectedFileOnChanged(event) {
+    //     this.uploader.queue[0].onSuccess = function (response, status, headers) {
+    //         // 上传文件成功
+    //         if (status == 200) {
+    //             console.log(response)
+    //             let tempRes = JSON.parse(response);
+    //         } else {
+    //             // 上传文件后获取服务器返回的数据错误
+    //             alert("");
+    //         }
+    //     };
+    //     this.uploader.queue[0].upload(); // 开始上传
+    // }
 
     upload(file: File) {
         if (!file) {
@@ -67,7 +67,7 @@ export class UploaderService {
         // The `reportProgress` option tells HttpClient to listen and return
         // XHR progress events.
 
-        let url = '/ionic/track-admin/index.php/core/UploadController/uploadTrackImg?token' +this.storageService.read<string>('token');
+        let url = '/git/MY/ionic/back/time-track/index.php/core/UploadController/uploadTrackImg?token' +this.storageService.read<string>('token');
         this.uploader= new FileUploader({
             url: url,
             method: "POST"

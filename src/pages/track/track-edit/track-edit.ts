@@ -20,6 +20,8 @@ import {StorageService} from "../../../providers/StorageService";
     providers: [TrackService]
 })
 export class TrackEditPage {
+    public selectedImgUrl = [];
+
     public uploader:FileUploader = new FileUploader({
         url: "/ionic/track-admin/index.php/core/UploadController/uploadTrackImg?token=c4ca4238a0b923820dcc509a6f75849b.5ac735b464d0f",
         method: "POST",
@@ -42,12 +44,21 @@ export class TrackEditPage {
                 private storageService: StorageService,
                 private file: File) {
         this.uploader = new FileUploader({
-            url: "/ionic/track-admin/index.php/core/UploadController/uploadTrackImg?token=" + this.storageService.read<string>('token'),
+            url: "/git/MY/ionic/back/time-track/index.php/core/UploadController/uploadTrackImg?token=" + this.storageService.read<string>('token'),
             method: "POST",
             itemAlias: "track_img"
         });
         var trackId = navParams.get('trackId');
         var themeId = navParams.get('themeId');
+        this.trackEditForm = this.formBuilder.group({
+            trackId: [''],
+            themeId: [themeId, [Validators.required]],
+            trackDate: [new Date()],
+            trackDateTime: [new Date()],
+            content: [''],
+            style: [''],
+        });
+        console.log(trackId);
         if (trackId == null) {
             this.trackEditForm = this.formBuilder.group({
                 trackId: [''],
@@ -56,17 +67,18 @@ export class TrackEditPage {
                 trackDateTime: [new Date()],
                 content: [''],
                 style: [''],
-                fileList: [[]]
             });
         } else {
             this.getTrackInfo(trackId);
         }
+        console.log(this.trackEditForm)
     }
 
     selectedFileOnChanged(event) {
         // console.log(this.uploader.queue);
         // console.log(document.querySelector('#preDiv').innerHTML);
         // document.querySelector('#preDiv').innerHTML = 'div';
+        let self = this;
         for (var i in this.uploader.queue){
             this.uploader.queue[i].onSuccess = function (response, status, headers) {
                 // 上传文件成功
@@ -74,9 +86,11 @@ export class TrackEditPage {
                     var obj = JSON.parse(response);
                     if (obj.code == 'OK'){
                         //上传成功
-                        var innerHtml = document.querySelector('#preDiv').innerHTML;
-                        innerHtml = '<img width="23%" height="90ox;" src="' + obj.data[0].mini_img_url + '">' + innerHtml;
-                        document.querySelector('#preDiv').innerHTML = innerHtml;
+                        console.log(self.selectedImgUrl);
+                        self.selectedImgUrl.push({
+                            img_url : '/git/MY/ionic/back/time-track/' + obj.data[0].img_url,
+                            mini_img_url : '/git/MY/ionic/back/time-track/' + obj.data[0].mini_img_url
+                        });
                         // document.querySelector('#preview1').innerHTML = obj.data[0].img_url;
                     }else {
                         //上传失败
@@ -89,10 +103,14 @@ export class TrackEditPage {
             this.uploader.queue[i].upload(); // 开始上传
         }
         this.uploader = new FileUploader({
-            url: "/ionic/track-admin/index.php/core/UploadController/uploadTrackImg?token=" + this.storageService.read<string>('token'),
+            url: "/git/MY/ionic/back/time-track/index.php/core/UploadController/uploadTrackImg?token=" + this.storageService.read<string>('token'),
             method: "POST",
             itemAlias: "track_img"
         });
+    }
+
+    removeImg(item){
+        this.selectedImgUrl.splice(this.selectedImgUrl.indexOf(item),1);
     }
 
     uploadTest(input: HTMLInputElement) {
@@ -129,17 +147,15 @@ export class TrackEditPage {
 
     getTrackInfo(trackId: any) {
         this.trackService.trackInfo(trackId).then(data => {
-            this.user = data.Result;
             if (typeof(data) == 'object' && typeof(data.code) == 'string' && data.code == 'OK') {
                 console.log(data.data);
                 this.trackEditForm = this.formBuilder.group({
                     trackId: [data.data.track_id],
                     themeId: [data.data.theme_id, [Validators.required]],
-                    trackDate: data.data.track_date,
-                    trackDateTime: data.data.track_date_time,
-                    content: data.data.content,
-                    style: data.data.style,
-                    fileLis: data.data.style
+                    trackDate: [data.data.track_date],
+                    trackDateTime: [data.data.track_date_time],
+                    content: [data.data.content],
+                    style: [data.data.style],
                 });
             } else {
                 alert('系统错误.');

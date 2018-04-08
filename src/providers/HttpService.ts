@@ -11,7 +11,7 @@ import { UserInfoData } from "./../model/UserInfoData";
 @Injectable()
 export class HttpService {
     myInfoLocal: any;
-    firstUrl = "/ionic/track-admin/index.php";
+    firstUrl = "/git/MY/ionic/back/time-track/index.php";
     local: Storage;
     constructor(
         private http: HttpClient,

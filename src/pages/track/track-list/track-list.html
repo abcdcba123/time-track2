@@ -14,7 +14,7 @@
         <ion-title>track-list</ion-title>
 
         <ion-buttons end>
-            <button ion-button icon-only (click)="goEditTrack()">
+            <button ion-button icon-only (click)="goEditTrack(null)">
                 <ion-icon ios="ios-add"></ion-icon>
             </button>
         </ion-buttons>
@@ -30,7 +30,7 @@
                 <p>{{track.time}}</p>
             </ion-item>
             <ion-card-content>
-                <p>{{track.content}}</p>
+                <p (click)="goEditTrack(track.track_id)">{{track.content}}</p>
             </ion-card-content>
             <img style="display: inline;width: 45%;" src="assets/icon/favicon.ico">
             <img style="display: inline;width: 45%;" src="assets/icon/favicon.ico">

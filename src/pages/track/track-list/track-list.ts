@@ -51,6 +51,7 @@ export class TrackListPage {
                 this.trackList = [];
                 for (let i in data.data.track_list) {
                     this.trackList[i] = {
+                        track_id: data.data.track_list[i].track_id,
                         time: data.data.track_list[i].track_time,
                         content: data.data.track_list[i].content,
                         img_1: data.data.track_list[i].content,
@@ -93,8 +94,8 @@ export class TrackListPage {
         actionSheet.present();
     }
 
-    goEditTrack() {
-        this.navCtrl.push(TrackEditPage, {trackId: null, themeId: this.theme_id});
+    goEditTrack(trackId) {
+        this.navCtrl.push(TrackEditPage, {trackId: trackId, themeId: this.theme_id});
     }
 
     presentPopover(myEvent) {

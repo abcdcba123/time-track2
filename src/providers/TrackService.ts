@@ -15,7 +15,7 @@ export class TrackService {
     }
 
     trackInfo(track_id:number | null){
-        var url = "/core/TrackController/trackList";
+        var url = "/core/TrackController/trackInfo";
         var params = {track_id:track_id};
         return this.httpService.httpGetWithAuth(url, params);
     }

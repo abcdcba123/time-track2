@@ -20,8 +20,19 @@
             <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" formControlName="trackDateTime"></ion-datetime>
         </ion-item>
         <div id="preDiv">
-            <input type="file" accept="images/*" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)" class="file_upload" multiple="multiple" />
-            <img src="assets/imgs/addpic.png" class="addpic" id="preview1" />
+            <ul style="padding: 0;" >
+                    <!-- 采用angular循环的方式，对存入thumb的图片进行展示 -->
+                <li style="list-style-type: none;display: inline-block;width: 23%;height: 90px;" *ngFor="let item of selectedImgUrl">
+                    <p style="position: fixed;padding: 0;margin: 0px 0px 6px 20px;display: block;text-align: center;background-color: red;" (click)="removeImg(item)" >
+                        删除图片
+                    </p>
+                    <img _ngcontent-c1="" class="addpic" src="{{item.mini_img_url}}" style="width: 100%;">
+                </li>
+                <li style="list-style-type: none;display: inline-block;width: 23%;height: 90px;">
+                    <input type="file" accept="images/*" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)" class="file_upload" multiple="multiple" />
+                    <img src="assets/imgs/addpic.png" class="addpic" id="preview1" />
+                </li>
+            </ul>
         </div>
         <!--<input type="file" id="track_img" #track_img (change)="uploadTest(track_img)" name="file" id="file">-->
         <!--<input type="file" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)">-->
@@ -38,8 +49,8 @@
         opacity: 0;
     }
     .addpic {
-        width: 23%;
         height: 90px;
         margin-left: 2px;
     }
+
 </style>

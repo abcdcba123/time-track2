@@ -23,7 +23,7 @@ import {FileTransfer, FileUploadOptions, FileTransferObject} from '@ionic-native
 import {File} from '@ionic-native/file';
 import {ImageService} from "../providers/ImageService";
 import {UploaderService} from "../providers/UploaderService";
-import { FileUploadModule } from 'ng2-file-upload';
+import {FileUploadModule} from 'ng2-file-upload';
 
 @NgModule({
     declarations: [
