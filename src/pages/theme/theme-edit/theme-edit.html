@@ -1,0 +1,38 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>theme-edit</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <form [formGroup]="themeEditForm" >
+        <ion-input type="hidden" formControlName="themeId"></ion-input>
+        <ion-item>
+            <ion-label>主题名称</ion-label>
+            <ion-textarea formControlName="themeName"></ion-textarea>
+        </ion-item>
+        <ion-item>
+            <ion-label>排序</ion-label>
+            <ion-textarea formControlName="sort" ></ion-textarea>
+        </ion-item>
+        <div>
+            <input type="file" accept="images/*" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)" class="file_upload" multiple="multiple" />
+            <img src="{{selectedImgUrl == null?'assets/imgs/addpic.png':selectedImgUrl}}" class="addpic" id="preview1" />
+            <button ion-button (click)="removeImg()">清除小图像</button>
+        </div>
+        <button ion-button full (click)="saveThemeInfo(themeEditForm.value, $event)" [disabled]="!themeEditForm.valid">Dark</button>
+    </form>
+</ion-content>
+<style>
+    .file_upload {
+        position: absolute;
+        width: 22%;
+        height: 90px;
+        margin-left: 2px;
+        opacity: 0;
+    }
+    .addpic {
+        height: 90px;
+        margin-left: 2px;
+    }
+
+</style>

@@ -24,6 +24,8 @@ import {File} from '@ionic-native/file';
 import {ImageService} from "../providers/ImageService";
 import {UploaderService} from "../providers/UploaderService";
 import {FileUploadModule} from 'ng2-file-upload';
+import {ThemeEditPage} from "../pages/theme/theme-edit/theme-edit";
+import {ThemeService} from "../providers/ThemeService";
 
 @NgModule({
     declarations: [
@@ -35,6 +37,7 @@ import {FileUploadModule} from 'ng2-file-upload';
         MyinfoPage,
         TrackListPage,
         TrackEditPage,
+        ThemeEditPage,
         TabsPage
     ],
     imports: [
@@ -53,6 +56,7 @@ import {FileUploadModule} from 'ng2-file-upload';
         MyinfoPage,
         TrackListPage,
         TrackEditPage,
+        ThemeEditPage,
         TabsPage
     ],
     providers: [
@@ -66,6 +70,7 @@ import {FileUploadModule} from 'ng2-file-upload';
         Camera,
         ImagePicker,
         FileTransferObject,
+        ThemeService,
         UploaderService,
         {provide: ErrorHandler, useClass: IonicErrorHandler}
     ]

@@ -1,6 +1,16 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>time-list</ion-title>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title>时光轨迹</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="goEditTheme(null)">
+        <ion-icon ios="ios-add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -8,9 +18,9 @@
 
   <ion-list>
     <ion-list-header>
-      Settings
+      主题列表
     </ion-list-header>
-    <ion-item-group  *ngFor="let chat of chats" >
+    <ion-item-group  *ngFor="let chat of themes" >
       <button ion-item (click)="trackList(chat.theme_id)">
         <ion-avatar item-start>
           <img [src]="chat.img">

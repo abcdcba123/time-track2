@@ -25,7 +25,9 @@ export class TabsPage {
               private storageService: StorageService) {
       let userInfo = this.storageService.read('userInfo');
       let token = this.storageService.read('token');
-      if (!token || token === 'null' || token === 'undefined' || !userInfo || userInfo === 'null' || userInfo === 'undefined') {  // 未登录则不加载
+      console.log(token);
+      console.log(userInfo);
+      if (!token || token === 'null' || token === 'undefined') {  // 未登录则不加载
         this.tab4Root = LoginPage;
       }else {
         this.tab4Root = MyinfoPage;

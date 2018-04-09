@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { NavController, ToastController } from 'ionic-angular';
-import { FormBuilder, Validators } from '@angular/forms';
+import {Component} from '@angular/core';
+import {NavController, ToastController} from 'ionic-angular';
+import {FormBuilder, Validators} from '@angular/forms';
 import 'rxjs/add/operator/toPromise';
 
-import { UserInfoService } from "./../../providers/UserInfoService";
-import { StorageService } from "./../../providers/StorageService";
+import {UserInfoService} from "./../../providers/UserInfoService";
+import {StorageService} from "./../../providers/StorageService";
 
-import { MyinfoPage } from '../myinfo/myinfo';
+import {MyinfoPage} from '../myinfo/myinfo';
 
 
 @Component({
@@ -17,16 +17,17 @@ import { MyinfoPage } from '../myinfo/myinfo';
 export class LoginPage {
 
     local: Storage;
-    constructor(
-        public navCtrl: NavController,
-        private formBuilder: FormBuilder,
-        public toastCtrl: ToastController,
-        private userInfoService: UserInfoService,
-        private storageService: StorageService) { }
+
+    constructor(public navCtrl: NavController,
+                private formBuilder: FormBuilder,
+                public toastCtrl: ToastController,
+                private userInfoService: UserInfoService,
+                private storageService: StorageService) {
+    }
 
     loginForm = this.formBuilder.group({
         //'LoginID': ['admin@163.com', [Validators.required, Validators.pattern('^([a-zA-Z0-9_.]*)((@[a-zA-Z0-9_.]*)\.([a-zA-Z]{2}|[a-zA-Z]{3}))$')]],// 第一个参数是默认值
-        'phone': ['18817572554', [Validators.required, Validators.minLength(11)]],// 第一个参数是默认值
+        'phone': ['18817573163', [Validators.required, Validators.minLength(11)]],// 第一个参数是默认值
         'password': ['123456', [Validators.required, Validators.minLength(4)]]
     });
 
@@ -35,20 +36,16 @@ export class LoginPage {
     }
 
     login(user, _event) {
-        console.log(user);
-        var body = {phone:user.phone,password:user.password};
+        var body = {phone: user.phone, password: user.password};
         _event.preventDefault();//该方法将通知 Web 浏览器不要执行与事件关联的默认动作
         this.userInfoService.login(body).then(data => {
-            console.log(JSON.stringify(data));
-            console.log(data);
-            if (typeof(data) == 'object' && typeof(data.code) == 'string' && data.code == 'OK'){
+            if (typeof(data) == 'object' && typeof(data.code) == 'string' && data.code == 'OK') {
                 this.storageService.write('token', data.data.token);
                 //测试写缓存
                 let ss = this.storageService.read('token');
-                console.log(ss);
                 //传参
-            this.navCtrl.push(MyinfoPage, { token: data.data.token });
-            }else{
+                this.navCtrl.push(MyinfoPage, {token: data.data.token});
+            } else {
                 alert('用户名或密码错误.');
             }
             // if (typeof(data.token) == 'string')//登录成功

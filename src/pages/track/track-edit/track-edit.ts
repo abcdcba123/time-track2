@@ -164,8 +164,14 @@ export class TrackEditPage {
     }
 
     saveTrackInfo(trackInfo) {
-        console.log(trackInfo);
-        console.log(this.trackService);
+        if (this.selectedImgUrl.length > 0){
+            for (var i in this.selectedImgUrl){
+                var img_name = 'imgs[' + i + '][' + 'img_url]';
+                var mini_img_name = 'imgs[' + i + '][' + 'mini_img_url]';
+                trackInfo[img_name] = this.selectedImgUrl[i].img_url;
+                trackInfo[mini_img_name] = this.selectedImgUrl[i].mini_img_url;
+            }
+        }
         this.trackService.editTrackInfo(trackInfo).then(data => {
             console.log(data);
             trackInfo.trackId = data.data.track_id;
