@@ -19,7 +19,7 @@ import {HomePage} from "../../home/home";
 export class ThemeEditPage {
     public selectedImgUrl = null;
 
-    public uploader:FileUploader;
+    public uploader: FileUploader;
 
     themeEditForm: any;
 
@@ -63,12 +63,12 @@ export class ThemeEditPage {
             // 上传文件成功
             if (status == 200) {
                 var obj = JSON.parse(response);
-                if (obj.code == 'OK'){
+                if (obj.code == 'OK') {
                     //上传成功
                     console.log(self.selectedImgUrl);
                     self.selectedImgUrl = '/git/MY/ionic/back/time-track/' + obj.data[0].mini_img_url;
                     // document.querySelector('#preview1').innerHTML = obj.data[0].img_url;
-                }else {
+                } else {
                     //上传失败
                     alert('请重新登录');
                 }
@@ -84,7 +84,7 @@ export class ThemeEditPage {
         });
     }
 
-    removeImg(){
+    removeImg() {
         this.selectedImgUrl = null;
     }
 
@@ -97,6 +97,7 @@ export class ThemeEditPage {
                     themeName: [data.data.theme_name],
                     sort: [data.data.sort]
                 });
+                this.selectedImgUrl = data.data.theme_icon_url;
             } else {
                 alert('系统错误.');
             }
@@ -108,10 +109,17 @@ export class ThemeEditPage {
             themeInfo.themeIconUrl = this.selectedImgUrl;
         }
         this.themeService.editThemeInfo(themeInfo).then(data => {
-            console.log(data);
-            themeInfo.themeId = data.data.theme_id;
-            this.events.publish('theme:created', themeInfo);
-            this.navCtrl.popTo(HomePage);
+            if (typeof(data) == 'object' && typeof(data.code) == 'string') {
+                if (data.code == 'OK') {
+                    themeInfo.themeId = data.data.theme_id;
+                    this.events.publish('theme:created', themeInfo);
+                    this.navCtrl.popTo(HomePage);
+                } else {
+                    alert(data.data);
+                }
+            } else {
+                alert('请先登录');
+            }
         });
     }
 

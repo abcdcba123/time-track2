@@ -17,7 +17,7 @@ export class TrackListPage {
     theme_id: any;// 用来接收上一个页面传递过来的参数
     limit = 10;
     page = 1;
-    trackList: any[];
+    trackList: any[] = [];
 
     constructor(public navCtrl: NavController,
                 navParams: NavParams,
@@ -26,9 +26,12 @@ export class TrackListPage {
                 public actionSheetCtrl: ActionSheetController,
                 private popoverCtrl: PopoverController) {
         this.theme_id = navParams.get('theme_id');//这个是通过页面跳转传过来的值
+        this.page = 1;
         this.getTrackList();
         events.subscribe('track:created', (trackInfo, time) => {
             // user and time are the same arguments passed in `events.publish(user, time)`
+            this.page = 1;
+            this.trackList = [];
             this.getTrackList();
             // console.log(trackInfo);
             // this.trackList = [
@@ -48,15 +51,26 @@ export class TrackListPage {
             // this.user = data.Result;
             if (typeof(data) == 'object' && typeof(data.code) == 'string' && data.code == 'OK') {
                 console.log(data.data.track_list);
-                this.trackList = [];
                 for (let i in data.data.track_list) {
-                    this.trackList[i] = {
+                    var temp_data = {
                         track_id: data.data.track_list[i].track_id,
                         time: data.data.track_list[i].track_time,
                         content: data.data.track_list[i].content,
-                        img_1: data.data.track_list[i].content,
-                        img_2: data.data.track_list[i].content
+                        track_list:data.data.track_list[i].track_list,
+                        img_1:'',
+                        img_2:''
+                    };
+                    console.log(data.data.track_list[i].track_img_list);
+                    if (data.data.track_list[i].track_img_list){
+                        if (typeof(data.data.track_list[i].track_img_list[0]) == 'string'){
+                            temp_data.img_1 = data.data.track_list[i].track_img_list[0];
+                        }
+                        console.log(data.data.track_list[i].track_img_list[0]);
+                        if (typeof(data.data.track_list[i].track_img_list[1]) == 'string'){
+                            temp_data.img_2 = data.data.track_list[i].track_img_list[1];
+                        }
                     }
+                    this.trackList.push(temp_data);
                 }
             } else {
                 alert('用户名或密码错误.');
@@ -64,6 +78,26 @@ export class TrackListPage {
         });
     }
 
+    doRefresh(refresher) {
+        console.log("下拉刷新");
+        setTimeout(() => {
+            console.log('加载完成后，关闭刷新');
+            refresher.complete();
+            this.page = 1;
+            this.trackList = [];
+            this.getTrackList();
+        }, 1000);
+    }
+
+    doInfinite(infiniteScroll) {
+        setTimeout(() => {
+            console.log('加载完成后，关闭刷新');
+            infiniteScroll.complete();
+            //增加index
+            this.page ++;
+            this.getTrackList();
+        }, 1000);
+    }
 
     ionViewDidLoad() {
         console.log('Hello Myinfo Page');

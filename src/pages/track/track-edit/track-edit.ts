@@ -120,9 +120,6 @@ export class TrackEditPage {
             this.uploaderService.upload(file).then(data => {
                 console.log(data);
             });
-            // this.httpService.httpPostUploadWithAuth('/core/UploadController/uploadTrackImg',file).then(data => {
-            //     console.log(data);
-            // });
         }
     }
 
@@ -157,6 +154,15 @@ export class TrackEditPage {
                     content: [data.data.content],
                     style: [data.data.style],
                 });
+                if (data.data.track_img_list){
+                    for (var i in data.data.track_img_list){
+                        this.selectedImgUrl.push({
+                            img_url : data.data.track_img_list[i].img_url,
+                            mini_img_url : data.data.track_img_list[i].mini_img_url
+                        });
+                    }
+                }
+
             } else {
                 alert('系统错误.');
             }

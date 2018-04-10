@@ -24,6 +24,14 @@
 
 
 <ion-content padding>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content
+                pullingIcon="arrow-dropdown"
+                pullingText="Pull to refresh"
+                refreshingSpinner="circles"
+                refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
     <div *ngFor="let track of trackList">
         <ion-card>
             <ion-item>
@@ -32,8 +40,14 @@
             <ion-card-content>
                 <p (click)="goEditTrack(track.track_id)">{{track.content}}</p>
             </ion-card-content>
-            <img style="display: inline;width: 45%;" src="assets/icon/favicon.ico">
-            <img style="display: inline;width: 45%;" src="assets/icon/favicon.ico">
+            <img style="display: inline;width: 45%;" *ngIf="track.img_1 != ''" [src]="track.img_1">
+            <img style="display: inline;width: 45%;" *ngIf="track.img_1 != ''" [src]="track.img_2">
         </ion-card>
     </div>
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content
+                loadingSpinner="bubbles"
+                loadingText="加载中...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
 </ion-content>

@@ -12,7 +12,7 @@ import {ThemeEditPage} from "../theme/theme-edit/theme-edit";
 export class HomePage {
     themes: any[];
 
-    constructor(public navCtrl: NavController,events: Events, public themeService: ThemeService) {
+    constructor(public navCtrl: NavController,public events: Events, public themeService: ThemeService) {
         this.themeList();
         events.subscribe('theme:created', (themeInfo, time) => {
             this.themeList();
@@ -49,6 +49,16 @@ export class HomePage {
     public goEditTheme(themeId: any)
     {
         this.navCtrl.push(ThemeEditPage, {themeId: themeId});
+    }
+
+    public deleteTheme(theme){
+        this.themeService.deleteTheme(theme.theme_id).then(data => {
+            if (typeof(data) == 'object' && typeof(data.code) == 'string' && data.code == 'OK') {
+                this.themes.splice(this.themes.indexOf(theme),1);
+            } else {
+                console.log('删除失败');
+            }
+        });
     }
 
 }

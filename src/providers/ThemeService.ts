@@ -16,12 +16,19 @@ export class ThemeService {
 
     themeInfo(themeId) {
         var url = "/core/ThemeController/themeInfo";
-        var params = {theme_id: themeId};
+        var params = {themeId: themeId};
         return this.httpService.httpGetWithAuth(url, params);
     }
 
     editThemeInfo(themeInfo:any){
         var url = "/core/ThemeController/editTheme";
         return this.httpService.httpGetWithAuth(url, themeInfo);
+    }
+
+    deleteTheme(theme_id:number)
+    {
+        var url = "/core/ThemeController/deleteTheme";
+        var params = {themeId: theme_id};
+        return this.httpService.httpGetWithAuth(url, params);
     }
 }
