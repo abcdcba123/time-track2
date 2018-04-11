@@ -26,6 +26,8 @@ import {UploaderService} from "../providers/UploaderService";
 import {FileUploadModule} from 'ng2-file-upload';
 import {ThemeEditPage} from "../pages/theme/theme-edit/theme-edit";
 import {ThemeService} from "../providers/ThemeService";
+import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import * as ionicGalleryModal from 'ionic-gallery-modal';
 
 @NgModule({
     declarations: [
@@ -44,6 +46,8 @@ import {ThemeService} from "../providers/ThemeService";
         BrowserModule,
         HttpClientModule,
         FileUploadModule,
+        BrowserModule,
+        ionicGalleryModal.GalleryModalModule,
         IonicModule.forRoot(MyApp)
     ],
     bootstrap: [IonicApp],
@@ -72,7 +76,8 @@ import {ThemeService} from "../providers/ThemeService";
         FileTransferObject,
         ThemeService,
         UploaderService,
-        {provide: ErrorHandler, useClass: IonicErrorHandler}
+        {provide: ErrorHandler, useClass: IonicErrorHandler},
+        {provide: HAMMER_GESTURE_CONFIG, useClass: ionicGalleryModal.GalleryModalHammerConfig}
     ]
 })
 export class AppModule {

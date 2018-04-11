@@ -6,6 +6,8 @@ import {
 
 import {TrackService} from "../../../providers/TrackService";
 import {TrackEditPage} from "../track-edit/track-edit";
+import { ModalController } from 'ionic-angular';
+import { GalleryModal } from 'ionic-gallery-modal';
 
 
 @Component({
@@ -22,6 +24,7 @@ export class TrackListPage {
     constructor(public navCtrl: NavController,
                 navParams: NavParams,
                 events: Events,
+                public modalCtrl: ModalController,
                 private trackService: TrackService,
                 public actionSheetCtrl: ActionSheetController,
                 private popoverCtrl: PopoverController) {
@@ -47,7 +50,6 @@ export class TrackListPage {
 
     getTrackList() {
         this.trackService.trackList(this.theme_id, this.limit, this.page).then(data => {
-            console.log(data);
             // this.user = data.Result;
             if (typeof(data) == 'object' && typeof(data.code) == 'string' && data.code == 'OK') {
                 console.log(data.data.track_list);
@@ -56,20 +58,20 @@ export class TrackListPage {
                         track_id: data.data.track_list[i].track_id,
                         time: data.data.track_list[i].track_time,
                         content: data.data.track_list[i].content,
-                        track_list:data.data.track_list[i].track_list,
+                        track_img_list:data.data.track_list[i].track_img_list,
                         img_1:'',
                         img_2:''
                     };
-                    console.log(data.data.track_list[i].track_img_list);
+
                     if (data.data.track_list[i].track_img_list){
-                        if (typeof(data.data.track_list[i].track_img_list[0]) == 'string'){
-                            temp_data.img_1 = data.data.track_list[i].track_img_list[0];
+                        if (data.data.track_list[i].track_img_list[0]){
+                            temp_data.img_1 = data.data.track_list[i].track_img_list[0].mini_img_url;
                         }
-                        console.log(data.data.track_list[i].track_img_list[0]);
-                        if (typeof(data.data.track_list[i].track_img_list[1]) == 'string'){
-                            temp_data.img_2 = data.data.track_list[i].track_img_list[1];
+                        if (data.data.track_list[i].track_img_list[1]){
+                            temp_data.img_2 = data.data.track_list[i].track_img_list[1].mini_img_url;
                         }
                     }
+                    console.log(temp_data);
                     this.trackList.push(temp_data);
                 }
             } else {
@@ -137,6 +139,66 @@ export class TrackListPage {
         popover.present({
             ev: myEvent
         });
+    }
+
+    photoViews(photoData,initialSlide = 0){
+        let photos:Array<object> = [];
+        let obj = {};
+        console.log(photoData);
+        // 多张图片时（photoData为图片地址字符串数组）
+        if(photoData instanceof Array){
+            console.log(photoData)
+            photoData.forEach(function(item,index,array){
+                obj = {};
+                var key = 'img_url';
+                // photoData 为字符串数组时（即key不存在时）
+                if(item[key]){
+                    obj['url'] = item[key];
+                    photos.push(obj);
+                }
+            });
+        }
+        let modal = this.modalCtrl.create(GalleryModal, {
+            photos: photos,
+            initialSlide: initialSlide
+        });
+        modal.present();
+    }
+
+    photoViewsOld(photoData,key = '',initialSlide = 0){
+        let photos:Array<object> = [];
+        let obj = {};
+        // 单张图片时（photoData为一个图片地址字符串且不为空）
+        if(photoData && typeof(photoData) == "string"){
+            obj = {};
+            obj['url'] = photoData;
+            photos.push(obj);
+        }
+        console.log(photoData)
+
+        // 多张图片时（photoData为图片地址字符串数组）
+        if(photoData instanceof Array){
+            console.log(photoData)
+            photoData.forEach(function(item,index,array){
+                obj = {};
+                // photoData 为字符串数组时（即key不存在时）
+                if(key == '' && item){
+                    obj['url'] = item;
+                    photos.push(obj);
+                }
+                // photoData 为对象数组时（即key存在时）
+                console.log(item[key])
+                if(key != '' && item[key]){
+                    obj['url'] = item[key];
+                    photos.push(obj);
+                }
+            });
+        }
+        let modal = this.modalCtrl.create(GalleryModal, {
+            photos: photos,
+            initialSlide: initialSlide
+        });
+        modal.present();
     }
 }
 
