@@ -17,6 +17,9 @@ export class HomePage {
         events.subscribe('theme:created', (themeInfo, time) => {
             this.themeList();
         });
+        events.subscribe('user:login', () => {
+            this.themeList();
+        });
     }
 
     public themeList(){
@@ -59,6 +62,15 @@ export class HomePage {
                 console.log('删除失败');
             }
         });
+    }
+
+    public doRefreshThemeList(refresher){
+        console.log("下拉刷新");
+        setTimeout(() => {
+            console.log('加载完成后，关闭刷新');
+            refresher.complete();
+            this.themeList();
+        }, 1000);
     }
 
 }

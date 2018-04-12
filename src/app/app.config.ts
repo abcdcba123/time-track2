@@ -9,8 +9,8 @@ export class AppConfig {
     // }
 
     public static getProdBackAdminUrl() {
-        return "/git/MY/ionic/back/time-track";
-        // return "/track-admin";
+        // return "/git/MY/ionic/back/time-track";
+        return "/track-admin";
         // return "/track-admin";
         // return "/track-admin";
     }

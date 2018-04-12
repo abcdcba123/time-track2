@@ -23,11 +23,7 @@ import {AppConfig} from "../../../app/app.config";
 export class TrackEditPage {
     public selectedImgUrl = [];
 
-    public uploader:FileUploader = new FileUploader({
-        url: AppConfig.getProdBackAdminUrl() + "index.php/core/UploadController/uploadTrackImg?token=c4ca4238a0b923820dcc509a6f75849b.5ac735b464d0f",
-        method: "POST",
-        itemAlias: "track_img"
-    });
+    public uploader:FileUploader;
 
     trackEditForm: any;
 
@@ -101,7 +97,7 @@ export class TrackEditPage {
             this.uploader.queue[i].upload(); // 开始上传
         }
         this.uploader = new FileUploader({
-            url: "/track-admin/index.php/core/UploadController/uploadTrackImg?token=" + this.storageService.read<string>('token'),
+            url: AppConfig.getProdBackAdminUrl() + "/index.php/core/UploadController/uploadTrackImg?token=" + this.storageService.read<string>('token'),
             method: "POST",
             itemAlias: "track_img"
         });

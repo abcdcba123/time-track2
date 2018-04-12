@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, ToastController} from 'ionic-angular';
+import {Events, NavController, ToastController} from 'ionic-angular';
 import {FormBuilder, Validators} from '@angular/forms';
 import 'rxjs/add/operator/toPromise';
 
@@ -21,6 +21,7 @@ export class LoginPage {
     constructor(public navCtrl: NavController,
                 private formBuilder: FormBuilder,
                 public toastCtrl: ToastController,
+                public events: Events,
                 private userInfoService: UserInfoService,
                 private storageService: StorageService) {
     }
@@ -43,6 +44,7 @@ export class LoginPage {
                 this.storageService.write('token', data.data.token);
                 //测试写缓存
                 let ss = this.storageService.read('token');
+                this.events.publish('user:login');
                 //传参
                 this.navCtrl.push(MyinfoPage, {token: data.data.token});
             } else {
