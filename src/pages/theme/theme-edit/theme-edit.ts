@@ -10,6 +10,7 @@ import {FileUploader} from "ng2-file-upload";
 import {StorageService} from "../../../providers/StorageService";
 import {ThemeService} from "../../../providers/ThemeService";
 import {HomePage} from "../../home/home";
+import {AppConfig} from "../../../app/app.config";
 
 @Component({
     selector: 'page-track-edit',
@@ -35,7 +36,7 @@ export class ThemeEditPage {
                 private uploaderService: UploaderService,
                 private storageService: StorageService) {
         this.uploader = new FileUploader({
-            url: "/git/MY/ionic/back/time-track/index.php/core/UploadController/uploadTrackImg?token=" + this.storageService.read<string>('token'),
+            url: AppConfig.getProdBackAdminUrl() + "/index.php/core/UploadController/uploadTrackImg?token=" + this.storageService.read<string>('token'),
             method: "POST",
             itemAlias: "track_img"
         });
@@ -66,7 +67,7 @@ export class ThemeEditPage {
                 if (obj.code == 'OK') {
                     //上传成功
                     console.log(self.selectedImgUrl);
-                    self.selectedImgUrl = '/git/MY/ionic/back/time-track/' + obj.data[0].mini_img_url;
+                    self.selectedImgUrl = '/track-admin/' + obj.data[0].mini_img_url;
                     // document.querySelector('#preview1').innerHTML = obj.data[0].img_url;
                 } else {
                     //上传失败
@@ -78,7 +79,7 @@ export class ThemeEditPage {
         };
         this.uploader.queue[0].upload(); // 开始上传
         this.uploader = new FileUploader({
-            url: "/git/MY/ionic/back/time-track/index.php/core/UploadController/uploadTrackImg?token=" + this.storageService.read<string>('token'),
+            url: AppConfig.getProdBackAdminUrl() + "/index.php/core/UploadController/uploadTrackImg?token=" + this.storageService.read<string>('token'),
             method: "POST",
             itemAlias: "track_img"
         });
@@ -90,7 +91,7 @@ export class ThemeEditPage {
 
     getThemeInfo(themeId: any) {
         this.themeService.themeInfo(themeId).then(data => {
-            if (typeof(data) == 'object' && typeof(data.code) == 'string' && data.code == 'OK') {
+            if (typeof data == 'object' && typeof data.code == 'string' && data.code == 'OK') {
                 console.log(data.data);
                 this.themeEditForm = this.formBuilder.group({
                     themeId: [data.data.theme_id],
@@ -109,7 +110,7 @@ export class ThemeEditPage {
             themeInfo.themeIconUrl = this.selectedImgUrl;
         }
         this.themeService.editThemeInfo(themeInfo).then(data => {
-            if (typeof(data) == 'object' && typeof(data.code) == 'string') {
+            if (typeof data == 'object' && typeof data.code == 'string') {
                 if (data.code == 'OK') {
                     themeInfo.themeId = data.data.theme_id;
                     this.events.publish('theme:created', themeInfo);

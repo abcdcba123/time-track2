@@ -7,11 +7,12 @@ import 'rxjs/add/operator/toPromise';
 
 import { StorageService } from "./StorageService";
 import { UserInfoData } from "./../model/UserInfoData";
+import {AppConfig} from "../app/app.config";
 
 @Injectable()
 export class HttpService {
     myInfoLocal: any;
-    firstUrl = "/git/MY/ionic/back/time-track/index.php";
+    firstUrl = AppConfig.getProdBackAdminUrl() + "/index.php";
     local: Storage;
     constructor(
         private http: HttpClient,
@@ -26,7 +27,7 @@ export class HttpService {
         params.token = this.storageService.read<string>('token');
         // var headers = new HttpHeaders();
         // headers.append('Content-Type', 'application/json');
-        return this.http.get(url, {params:params}).toPromise()
+        return this.http.get<any>(url, {params:params}).toPromise()
             .catch(err => {
                 this.handleError(err);
             });
@@ -36,7 +37,7 @@ export class HttpService {
         console.log(url);
         var headers = new HttpHeaders();
         headers.append('Content-Type', 'application/json');
-        return this.http.get(url, {headers, params:params}).toPromise()
+        return this.http.get<any>(url, {headers, params:params}).toPromise()
             .catch(err => {
                 this.handleError(err);
             });
@@ -48,7 +49,7 @@ export class HttpService {
         console.log(body);
         // headers.append('Content-Type', 'application/json');
         // headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        return this.http.post(url, body).toPromise()
+        return this.http.post<any>(url, body).toPromise()
             .catch(err => {
                 // this.handleError(err);
                 console.log(err);
@@ -76,7 +77,7 @@ export class HttpService {
 
         // The `HttpClient.request` API produces a raw event stream
         // which includes start (sent), progress, and response events.
-        return this.http.request(req).toPromise()
+        return this.http.request<any>(req).toPromise()
             .catch(err => {
                 this.handleError(err);
             });

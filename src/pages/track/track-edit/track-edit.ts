@@ -12,6 +12,7 @@ import {HttpService} from "../../../providers/HttpService";
 import {UploaderService} from "../../../providers/UploaderService";
 import {FileUploader} from "ng2-file-upload";
 import {StorageService} from "../../../providers/StorageService";
+import {AppConfig} from "../../../app/app.config";
 
 
 @Component({
@@ -23,7 +24,7 @@ export class TrackEditPage {
     public selectedImgUrl = [];
 
     public uploader:FileUploader = new FileUploader({
-        url: "/ionic/track-admin/index.php/core/UploadController/uploadTrackImg?token=c4ca4238a0b923820dcc509a6f75849b.5ac735b464d0f",
+        url: AppConfig.getProdBackAdminUrl() + "index.php/core/UploadController/uploadTrackImg?token=c4ca4238a0b923820dcc509a6f75849b.5ac735b464d0f",
         method: "POST",
         itemAlias: "track_img"
     });
@@ -44,7 +45,7 @@ export class TrackEditPage {
                 private storageService: StorageService,
                 private file: File) {
         this.uploader = new FileUploader({
-            url: "/git/MY/ionic/back/time-track/index.php/core/UploadController/uploadTrackImg?token=" + this.storageService.read<string>('token'),
+            url: AppConfig.getProdBackAdminUrl() + "/index.php/core/UploadController/uploadTrackImg?token=" + this.storageService.read<string>('token'),
             method: "POST",
             itemAlias: "track_img"
         });
@@ -75,9 +76,6 @@ export class TrackEditPage {
     }
 
     selectedFileOnChanged(event) {
-        // console.log(this.uploader.queue);
-        // console.log(document.querySelector('#preDiv').innerHTML);
-        // document.querySelector('#preDiv').innerHTML = 'div';
         let self = this;
         for (var i in this.uploader.queue){
             this.uploader.queue[i].onSuccess = function (response, status, headers) {
@@ -88,8 +86,8 @@ export class TrackEditPage {
                         //上传成功
                         console.log(self.selectedImgUrl);
                         self.selectedImgUrl.push({
-                            img_url : '/git/MY/ionic/back/time-track/' + obj.data[0].img_url,
-                            mini_img_url : '/git/MY/ionic/back/time-track/' + obj.data[0].mini_img_url
+                            img_url : '/track-admin/' + obj.data[0].img_url,
+                            mini_img_url : '/track-admin/' + obj.data[0].mini_img_url
                         });
                         // document.querySelector('#preview1').innerHTML = obj.data[0].img_url;
                     }else {
@@ -103,7 +101,7 @@ export class TrackEditPage {
             this.uploader.queue[i].upload(); // 开始上传
         }
         this.uploader = new FileUploader({
-            url: "/git/MY/ionic/back/time-track/index.php/core/UploadController/uploadTrackImg?token=" + this.storageService.read<string>('token'),
+            url: "/track-admin/index.php/core/UploadController/uploadTrackImg?token=" + this.storageService.read<string>('token'),
             method: "POST",
             itemAlias: "track_img"
         });
@@ -113,38 +111,9 @@ export class TrackEditPage {
         this.selectedImgUrl.splice(this.selectedImgUrl.indexOf(item),1);
     }
 
-    uploadTest(input: HTMLInputElement) {
-        const file = input.files[0];
-        console.log(file);
-        if (file) {
-            this.uploaderService.upload(file).then(data => {
-                console.log(data);
-            });
-        }
-    }
-
-    upload() {
-        const fileTransfer: FileTransferObject = this.transfer.create();
-
-        let options: FileUploadOptions = {
-            fileKey: 'file',
-            fileName: 'name.jpg',
-            headers: {}
-        }
-
-        fileTransfer.upload('<file path>', '<api endpoint>', options)
-            .then((data) => {
-                console.log(data)
-                // success
-            }, (err) => {
-                // error
-                console.log(data)
-            })
-    }
-
     getTrackInfo(trackId: any) {
         this.trackService.trackInfo(trackId).then(data => {
-            if (typeof(data) == 'object' && typeof(data.code) == 'string' && data.code == 'OK') {
+            if (typeof data == 'object' && typeof data.code == 'string' && data.code == 'OK') {
                 console.log(data.data);
                 this.trackEditForm = this.formBuilder.group({
                     trackId: [data.data.track_id],

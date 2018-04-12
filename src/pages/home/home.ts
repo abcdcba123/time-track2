@@ -53,7 +53,7 @@ export class HomePage {
 
     public deleteTheme(theme){
         this.themeService.deleteTheme(theme.theme_id).then(data => {
-            if (typeof(data) == 'object' && typeof(data.code) == 'string' && data.code == 'OK') {
+            if (data.code && data.code == 'OK') {
                 this.themes.splice(this.themes.indexOf(theme),1);
             } else {
                 console.log('删除失败');

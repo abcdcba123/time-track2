@@ -51,7 +51,7 @@ export class TrackListPage {
     getTrackList() {
         this.trackService.trackList(this.theme_id, this.limit, this.page).then(data => {
             // this.user = data.Result;
-            if (typeof(data) == 'object' && typeof(data.code) == 'string' && data.code == 'OK') {
+            if (typeof data == 'object' && typeof data.code == 'string' && data.code == 'OK') {
                 console.log(data.data.track_list);
                 for (let i in data.data.track_list) {
                     var temp_data = {
@@ -169,7 +169,7 @@ export class TrackListPage {
         let photos:Array<object> = [];
         let obj = {};
         // 单张图片时（photoData为一个图片地址字符串且不为空）
-        if(photoData && typeof(photoData) == "string"){
+        if(photoData && typeof photoData == "string"){
             obj = {};
             obj['url'] = photoData;
             photos.push(obj);

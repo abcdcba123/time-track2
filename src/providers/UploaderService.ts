@@ -67,7 +67,7 @@ export class UploaderService {
         // The `reportProgress` option tells HttpClient to listen and return
         // XHR progress events.
 
-        let url = '/git/MY/ionic/back/time-track/index.php/core/UploadController/uploadTrackImg?token' +this.storageService.read<string>('token');
+        let url = '/track-admin/index.php/core/UploadController/uploadTrackImg?token' +this.storageService.read<string>('token');
         this.uploader= new FileUploader({
             url: url,
             method: "POST"
